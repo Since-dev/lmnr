@@ -1436,6 +1436,8 @@ export const jwks = pgTable("jwks", {
   privateKey: text("private_key").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow().notNull(),
   expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }),
+  alg: text(),
+  crv: text(),
 });
 
 export const debuggerSessions = pgTable(
