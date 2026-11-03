@@ -29,15 +29,19 @@ export const localEmail = () => ({
         const existing = await ctx.context.internalAdapter.findUserByEmail(email);
         const user =
           existing?.user ??
-          (await ctx.context.internalAdapter.createUser({
-            email,
-            name: name || email,
-            // Verified so a later OAuth sign-in with the same address can link
-            // (Better Auth's account-linking gate requires a verified local
-            // email — see `requireLocalEmailVerified`). Local-email is a
-            // no-password convenience, so there's no verification state to protect.
-            emailVerified: true,
-          }));
+          (await ctx.context.internalAdapter.createUser(
+            {
+              email,
+              name: name || email,
+              // Verified so a later OAuth sign-in with the same address can link
+              // (Better Auth's account-linking gate requires a verified local
+              // email — see `requireLocalEmailVerified`). Local-email is a
+              // no-password convenience, so there's no verification state to protect.
+              emailVerified: true,
+            },
+            // Provisioning source (Better Auth 1.7): identifies this plugin as the sign-in method.
+            { method: "local-email" }
+          ));
 
         if (!user) {
           throw new APIError("INTERNAL_SERVER_ERROR", { message: "Failed to create user" });
