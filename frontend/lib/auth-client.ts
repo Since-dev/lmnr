@@ -1,4 +1,4 @@
-import { deviceAuthorizationClient, genericOAuthClient, jwtClient } from "better-auth/client/plugins";
+import { deviceAuthorizationClient, jwtClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
 import { BASE_PATH, withBasePath } from "@/lib/utils";
@@ -14,13 +14,14 @@ const baseURL = typeof window !== "undefined" ? `${window.location.origin}${BASE
 
 export const authClient = createAuthClient({
   baseURL,
-  plugins: [genericOAuthClient(), jwtClient(), deviceAuthorizationClient()],
+  plugins: [jwtClient(), deviceAuthorizationClient()],
 });
 
 export const { signOut } = authClient;
 
 // Provider ids match Better Auth's registered ids exactly: github/google are
-// social providers; the rest are genericOAuth (`signIn.oauth2`).
+// social providers; the rest are genericOAuth, which Better Auth also signs in
+// through `signIn.social`.
 export type AuthProvider = "github" | "google" | "microsoft-entra-id" | "okta" | "keycloak";
 
 // Unified sign-in across social + genericOAuth providers. Better Auth's client
@@ -38,10 +39,7 @@ export const signInWithProvider = (provider: AuthProvider, callbackURL: string, 
   // Next's basePath), so prefix both for sub-path deploys.
   const prefixedCallbackURL = withBasePath(callbackURL);
   const errorCallbackURL = withBasePath(`${errorPath}?callbackUrl=${encodeURIComponent(callbackURL)}`);
-  if (provider === "github" || provider === "google") {
-    return authClient.signIn.social({ provider, callbackURL: prefixedCallbackURL, errorCallbackURL });
-  }
-  return authClient.signIn.oauth2({ providerId: provider, callbackURL: prefixedCallbackURL, errorCallbackURL });
+  return authClient.signIn.social({ provider, callbackURL: prefixedCallbackURL, errorCallbackURL });
 };
 
 // Sign in with our passwordless local-email endpoint (self-hosted convenience).
