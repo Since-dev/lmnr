@@ -1,7 +1,7 @@
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createAzure } from "@ai-sdk/azure";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGoogle } from "@ai-sdk/google";
 import { createOpenAI } from "@ai-sdk/openai";
 import type { LanguageModel } from "ai";
 
@@ -266,6 +266,6 @@ export function envLanguageModel(tier: ModelTier = "large"): LanguageModel {
     return openai(modelName);
   }
 
-  const google = createGoogleGenerativeAI({ apiKey, ...(baseURL ? { baseURL } : {}), ...(headers ? { headers } : {}) });
+  const google = createGoogle({ apiKey, ...(baseURL ? { baseURL } : {}), ...(headers ? { headers } : {}) });
   return google(modelName);
 }
