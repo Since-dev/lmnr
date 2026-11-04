@@ -1,4 +1,4 @@
-import { withSentryConfig } from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs/config";
 import { type NextConfig } from "next";
 
 // Baked at BUILD time (not a runtime flip) — Next inlines basePath into the
