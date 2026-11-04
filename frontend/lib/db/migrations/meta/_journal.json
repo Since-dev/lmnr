@@ -855,6 +855,13 @@
       "when": 1792943286744,
       "tag": "0121_agent_releases",
       "breakpoints": true
+    },
+    {
+      "idx": 122,
+      "version": "7",
+      "when": 1793782069351,
+      "tag": "0122_better_auth_jwks_alg_crv",
+      "breakpoints": true
     }
   ]
 }

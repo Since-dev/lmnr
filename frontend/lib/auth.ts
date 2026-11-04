@@ -123,11 +123,11 @@ const getSocialProviders = (): NonNullable<BetterAuthOptions["socialProviders"]>
 
 // Build the OAuth redirect_uri as `<origin><base-path>/api/auth/callback/<id>`.
 //
-// Path: pin to the NextAuth-style path (`/api/auth/callback/<id>`), NOT Better Auth's
-// default (`/oauth2/callback/<id>`): self-hosters already registered this path with
-// their IdP, and sending the new one fails the IdP's redirect_uri match. The
-// next.config.ts rewrite forwards the inbound hit to Better Auth's handler. (Azure's
-// id here is `azure-ad`, matching what was registered.)
+// Path: pin to the NextAuth-style path (`/api/auth/callback/<id>`): self-hosters
+// already registered this path with their IdP, and sending another one fails the
+// IdP's redirect_uri match. Azure's id here is `azure-ad`, matching what was
+// registered; the next.config.ts rewrite forwards it to Better Auth's
+// `microsoft-entra-id` callback.
 //
 // Prefix: derive the sub-path from the build-time-baked BASE_PATH (NEXT_PUBLIC_BASE_PATH),
 // NOT from AUTH_URL. The whole point of this dynamic resolution is that an operator

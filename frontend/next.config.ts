@@ -31,16 +31,13 @@ const nextConfig: NextConfig = {
     "/policies/*": ["./lib/policies/content/*.md"],
   },
   async rewrites() {
-    // Forward LEGACY NextAuth genericOAuth callbacks to Better Auth's handler so
-    // self-hosted Okta/Keycloak/Azure SSO keeps working with no IdP change (paired
-    // with the pinned redirectURI in lib/auth.ts). `beforeFiles` to beat the
-    // `/api/auth/[...all]` catch-all; scoped to these 3 ids ONLY (NOT github/google).
+    // Forward the LEGACY NextAuth Azure callback to Better Auth's handler so
+    // self-hosted Azure SSO keeps working with no IdP change (paired with the
+    // pinned redirectURI in lib/auth.ts). Okta/Keycloak need no rewrite: Better
+    // Auth serves genericOAuth callbacks at `/api/auth/callback/<id>`. `beforeFiles`
+    // to beat the `/api/auth/[...all]` catch-all.
     return {
-      beforeFiles: [
-        { source: "/api/auth/callback/okta", destination: "/api/auth/oauth2/callback/okta" },
-        { source: "/api/auth/callback/keycloak", destination: "/api/auth/oauth2/callback/keycloak" },
-        { source: "/api/auth/callback/azure-ad", destination: "/api/auth/oauth2/callback/microsoft-entra-id" },
-      ],
+      beforeFiles: [{ source: "/api/auth/callback/azure-ad", destination: "/api/auth/callback/microsoft-entra-id" }],
     };
   },
   async headers() {
