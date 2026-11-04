@@ -1,7 +1,7 @@
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createAzure } from "@ai-sdk/azure";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGoogle } from "@ai-sdk/google";
 import { createGroq } from "@ai-sdk/groq";
 import { createMistral } from "@ai-sdk/mistral";
 import { createOpenAI } from "@ai-sdk/openai";
@@ -32,7 +32,7 @@ export function languageModelFromProfile(
     case "anthropic":
       return createAnthropic({ apiKey: apiKey() })(model);
     case "gemini":
-      return createGoogleGenerativeAI({ apiKey: apiKey() })(model);
+      return createGoogle({ apiKey: apiKey() })(model);
     case "groq":
       return createGroq({ apiKey: apiKey() })(model);
     case "mistral":
